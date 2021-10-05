@@ -24,10 +24,10 @@ class Todo < ActiveRecord::Base
   def self.overdue
     where("due_date < ?", Date.today)
   end
-  def self.duetoday
+  def self.due_today
     where("due_date = ?", Date.today)
   end
-  def self.duelater
+  def self.due_later
     where("due_date > ?", Date.today)
   end
   def self.show_list
@@ -36,19 +36,19 @@ class Todo < ActiveRecord::Base
     puts overdue.map { |todo| todo.to_displayable_string }
     puts "\n\n"
     puts "Due Today\n"
-    puts duetoday.map { |todo| todo.to_displayable_string }
+    puts due_today.map { |todo| todo.to_displayable_string }
 
     puts "\n\n"
 
     puts "Due Later\n"
-    puts duelater.map { |todo| todo.to_displayable_string }
+    puts due_later.map { |todo| todo.to_displayable_string }
 
     puts "\n\n"
   end
   def self.add_task(h)
     todo_text = h[:todo_text]
     due_in_days = h[:due_in_days]
-    Todo.create!(todo_text: todo_text, due_date: Date.today + due_in_days)
+    create!(todo_text: todo_text, due_date: Date.today + due_in_days)
   end
   def self.mark_as_complete(todo_id)
     todo = Todo.find(todo_id)
